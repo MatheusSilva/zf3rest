@@ -3,3 +3,4 @@
 /.idea
 /nbproject
 composer.lock
+/data/cache

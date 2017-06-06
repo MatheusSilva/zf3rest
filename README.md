@@ -17,10 +17,10 @@ Listando todos os usuários
  curl -v -X GET http://192.168.33.10:8080/api/user
 
 Adicionando um novo usuário
- curl -d "login=reyan&nome=Reyansh Beemineni&email=reyan@gmail.com&telefone=9448985881&endereco=Sai Smaran Apartment, Bangalore" -v -X POST http://192.168.33.10:8080/api/user
+ curl -d "login=ze&nome=zezinho&email=zezinhoasdxsdd@gmail.com&telefone=(95) 2757-4164&endereco=Rua José Batista de Souza" -v -X POST http://192.168.33.10:8080/api/user
 
 Detalhe de um usuário
- curl -v -X GET http://192.168.33.10:8080/api/user/1
+ curl -v -X GET http://192.168.33.10:8080/api/user/4
 
 Atualizando um usuário
  curl -d "login=matheus&nome=matheus silva&email=matheus.hahhgdgf@gmail.com&telefone=987956475&endereco=Numa quebrada loka" -v -X PUT http://192.168.33.10:8080/api/user/4

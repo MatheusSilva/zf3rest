@@ -29,4 +29,45 @@ Excluindo um usuário
  curl -v -X DELETE http://192.168.33.10:8080/api/user/4
 ```
 
+
+## Categoria
+
+```
+Listando todas Categorias
+ curl -v -X GET http://192.168.33.10:8080/api/categoria
+
+Adicionando uma nova Categoria
+ curl -d "nome=zezinho" -v -X POST http://192.168.33.10:8080/api/categoria
+
+Detalhe da Categoria
+ curl -v -X GET http://192.168.33.10:8080/api/categoria/10
+
+Atualizando uma Categoria
+ curl -d "nome=sub 300" -v -X PUT http://192.168.33.10:8080/api/categoria/10
+
+Excluindo uma Categoria
+ curl -v -X DELETE http://192.168.33.10:8080/api/categoria/11
+```
+
+## Divisão
+
+```
+Listando todas Divisões
+ curl -v -X GET http://192.168.33.10:8080/api/divisao
+
+Adicionando uma nova Divisão
+ curl -d "nome=segundona" -v -X POST http://192.168.33.10:8080/api/divisao
+
+Detalhe da Divisão
+ curl -v -X GET http://192.168.33.10:8080/api/divisao/4
+
+Atualizando uma Divisão
+ curl -d "nome=serie C" -v -X PUT http://192.168.33.10:8080/api/divisao/4
+
+Excluindo uma Divisão
+ curl -v -X DELETE http://192.168.33.10:8080/api/divisao/4
+```
+
+
+
 Meu perfil no linkedin(http://br.linkedin.com/in/matheussilvaphp)

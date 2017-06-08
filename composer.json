@@ -25,7 +25,9 @@
             "Application\\": "module/Application/src/",
             "User\\": "module/User/src/",
             "Categoria\\": "module/Categoria/src/",
-            "Divisao\\": "module/Divisao/src/"
+            "Divisao\\": "module/Divisao/src/",
+            "Tecnico\\": "module/Tecnico/src/",
+            "Time\\": "module/Time/src/"
         }
     },
     "autoload-dev": {

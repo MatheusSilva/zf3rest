@@ -23,4 +23,6 @@ return [
     'User',
     'Categoria',
     'Divisao',
+    'Tecnico',
+    'Time',
 ];

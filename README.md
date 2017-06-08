@@ -68,6 +68,45 @@ Excluindo uma Divisão
  curl -v -X DELETE http://192.168.33.10:8080/api/divisao/4
 ```
 
+## Técnico
+
+```
+Listando todos Técnicos
+ curl -v -X GET http://192.168.33.10:8080/api/tecnico
+
+Adicionando um novo Técnico
+ curl -d "nome=tite&data_nascimento=20/04/1985" -v -X POST http://192.168.33.10:8080/api/tecnico
+
+Detalhe do Técnico
+ curl -v -X GET http://192.168.33.10:8080/api/tecnico/4
+
+Atualizando um Técnico
+ curl -d "nome=renato C&data_nascimento=25/02/1980" -v -X PUT http://192.168.33.10:8080/api/tecnico/4
+
+Excluindo um Técnico
+ curl -v -X DELETE http://192.168.33.10:8080/api/tecnico/4
+```
+
+## Time
+
+```
+Os comandos abaixo neste módulo ainda não funcionando pois o módulo ainda não foi codificado completamente.
+
+Listando todos Times
+ curl -v -X GET http://192.168.33.10:8080/api/time
+
+Adicionando um novo Time
+ curl -d "nome=gremio" -v -X POST http://192.168.33.10:8080/api/tecnico
+
+Detalhe do Time
+ curl -v -X GET http://192.168.33.10:8080/api/time/4
+
+Atualizando um Time
+ curl -d "nome=ceramica" -v -X PUT http://192.168.33.10:8080/api/time/4
+
+Excluindo um Time
+ curl -v -X DELETE http://192.168.33.10:8080/api/time/4
+```
 
 
 Meu perfil no linkedin(http://br.linkedin.com/in/matheussilvaphp)

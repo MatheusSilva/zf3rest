@@ -7,6 +7,8 @@ use User\Model\UserTable;
 use User\Model\User;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
+use Zend\I18n\Translator\Resources;
+use Zend\I18n\Translator\Translator;
 
 class UserController extends AbstractRestfulController {
 
@@ -14,6 +16,26 @@ class UserController extends AbstractRestfulController {
 
     public function __construct(UserTable $table) {
         $this->table = $table;
+    }
+
+    private function translateMessageErrors($arrMessages)
+    {
+        $translator = new Translator();
+        $translator->addTranslationFilePattern(
+            'phpArray',
+            Resources::getBasePath(),
+            Resources::getPatternForValidator()
+        );
+
+        $arrAux = $arrMessages;
+
+        foreach ($arrAux as $keyProp => $valueProp) {
+            foreach ($valueProp as $key => $value) {
+            $arrMessages[$keyProp][$key] = $translator->translate($value, 'default', 'pt_BR');
+            }
+        }
+        
+        return $arrMessages;    
     }
 
     public function getList() {
@@ -85,9 +107,13 @@ class UserController extends AbstractRestfulController {
         }
 
         $dataArr['status'] ='erro';
-        $dataArr['message'] = 'Dados inválidos';
-        return new JsonModel($dataArr);
+        $messages = $form->getMessages();
 
+        if (!empty($messages)) {
+            $dataArr['message'] = $this->translateMessageErrors($messages);    
+        }
+
+        return new JsonModel($dataArr);
     }
 
     public function update($id, $data) {
@@ -124,7 +150,12 @@ class UserController extends AbstractRestfulController {
         }
 
         $dataArr['status'] ='erro';
-        $dataArr['message'] = 'Dados inválidos';
+        $messages = $form->getMessages();
+
+        if (!empty($messages)) {
+            $dataArr['message'] = $this->translateMessageErrors($messages);    
+        }
+
         return new JsonModel($dataArr);
 
     }

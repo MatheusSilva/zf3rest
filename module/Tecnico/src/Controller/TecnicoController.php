@@ -7,6 +7,8 @@ use Tecnico\Model\TecnicoTable;
 use Tecnico\Model\Tecnico;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
+use Zend\I18n\Translator\Resources;
+use Zend\I18n\Translator\Translator;
 
 class TecnicoController extends AbstractRestfulController 
 {
@@ -15,6 +17,26 @@ class TecnicoController extends AbstractRestfulController
     public function __construct(TecnicoTable $table) 
     {
         $this->table = $table;
+    }
+
+    private function translateMessageErrors($arrMessages)
+    {
+        $translator = new Translator();
+        $translator->addTranslationFilePattern(
+            'phpArray',
+            Resources::getBasePath(),
+            Resources::getPatternForValidator()
+        );
+
+        $arrAux = $arrMessages;
+
+        foreach ($arrAux as $keyProp => $valueProp) {
+            foreach ($valueProp as $key => $value) {
+            $arrMessages[$keyProp][$key] = $translator->translate($value, 'default', 'pt_BR');
+            }
+        }
+        
+        return $arrMessages;    
     }
 
     public function getList() 
@@ -91,7 +113,12 @@ class TecnicoController extends AbstractRestfulController
         }
 
         $dataArr['status']  = 'erro';
-        $dataArr['message'] = 'Dados inválidos';
+        $messages = $form->getMessages();
+
+        if (!empty($messages)) {
+            $dataArr['message'] = $this->translateMessageErrors($messages);    
+        }
+
         return new JsonModel($dataArr);
     }
 
@@ -131,7 +158,12 @@ class TecnicoController extends AbstractRestfulController
         }
 
         $dataArr['status']  = 'erro';
-        $dataArr['message'] = 'Dados inválidos';
+        $messages = $form->getMessages();
+
+        if (!empty($messages)) {
+            $dataArr['message'] = $this->translateMessageErrors($messages);    
+        }
+
         return new JsonModel($dataArr);
     }
 

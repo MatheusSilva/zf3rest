@@ -5,10 +5,13 @@ use Time\Form\TimeForm;
 use Time\InputFilter\FormTimeFilter;
 use Time\Model\TimeTable;
 use Time\Model\Time;
-use Zend\Mvc\Controller\AbstractRestfulController;
+use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 
-class TimeController extends AbstractRestfulController 
+use Zend\I18n\Translator\Resources;
+use Zend\I18n\Translator\Translator;
+
+class TimeController extends AbstractActionController 
 {
     private $table;
 
@@ -17,7 +20,27 @@ class TimeController extends AbstractRestfulController
         $this->table = $table;
     }
 
-    public function getList() 
+    private function translateMessageErrors($arrMessages)
+    {
+        $translator = new Translator();
+        $translator->addTranslationFilePattern(
+            'phpArray',
+            Resources::getBasePath(),
+            Resources::getPatternForValidator()
+        );
+
+        $arrAux = $arrMessages;
+
+        foreach ($arrAux as $keyProp => $valueProp) {
+            foreach ($valueProp as $key => $value) {
+            $arrMessages[$keyProp][$key] = $translator->translate($value, 'default', 'pt_BR');
+            }
+        }
+        
+        return $arrMessages;    
+    }
+
+    public function indexAction() 
     {
         $times = $this->table->fetchAll();
 
@@ -29,24 +52,24 @@ class TimeController extends AbstractRestfulController
 
         if (empty($data)) {
             $timeArr['status']     = 'sucesso';
-            $timeArr['message']    = 'Divisões não encontradas';
+            $timeArr['message']    = 'Times não encontradas';
             $timeArr['torcedores'] = [];
             return new JsonModel($timeArr);
         }
 
         $timeArr['status']     = 'sucesso';
-        $timeArr['message']    = 'Divisões estão disponíveis';
+        $timeArr['message']    = 'Times estão disponíveis';
         $timeArr['torcedores'] = $data;
         return new JsonModel($timeArr);
     }
 
-    public function get($id) 
+    public function detalheAction() 
     {
-        $id = (int) $id;
+        $id = (int) $this->params()->fromRoute('id');
 
         if (0 === $id) {
             $dataArr['status']  = 'erro';
-            $dataArr['message'] = 'Divisão não existe';
+            $dataArr['message'] = 'Time não existe';
             return new JsonModel($dataArr);
         }
 
@@ -59,19 +82,23 @@ class TimeController extends AbstractRestfulController
             $timeArr = json_decode(json_encode($time), true);
         } else {
             $dataArr['status']  = 'erro';
-            $dataArr['message'] = 'Divisão não existe';
+            $dataArr['message'] = 'Time não existe';
             $dataArr['torcedorDetails'] = [];
             return new JsonModel($dataArr);
         }
 
         $dataArr['status']  = 'sucesso';
-        $dataArr['message'] = 'Detalhes da divisão estão disponíveis';
+        $dataArr['message'] = 'Detalhes do time estão disponíveis';
         $dataArr['torcedorDetails'] = $timeArr;
         return new JsonModel($dataArr);
     }
 
-    public function create($data) 
+    public function createAction() 
     {
+        /*if ($this->getRequest()->isPost()) {
+            $data = $this->params()->fromPost();
+        }*/
+
         $form = new TimeForm();
         $request = $this->getRequest();
 
@@ -80,37 +107,44 @@ class TimeController extends AbstractRestfulController
         $form->setData($request->getPost());
 
         $dataArr=[];
-
+        
         if ($form->isValid()) {
             $time = new Time();
             $time->exchangeArray($form->getData());
             $this->table->saveTime($time);
             $dataArr['status']  = 'sucesso';
-            $dataArr['message'] = 'Divisão adicionada com sucesso!';
+            $dataArr['message'] = 'Time adicionado com sucesso!';
             return new JsonModel($dataArr);
         }
 
         $dataArr['status']  = 'erro';
-        $dataArr['message'] = 'Dados inválidos';
+        $messages = $form->getMessages();
+
+        if (!empty($messages)) {
+            $dataArr['message'] = $this->translateMessageErrors($messages);    
+        }
+
         return new JsonModel($dataArr);
     }
 
-    public function update($id, $data) 
+    public function updateAction() 
     {
-        $id = (int) $id;
+        $id = (int) $this->params()->fromRoute('id');
 
         $dataArr=[];
 
         if (0 === $id) {
             $dataArr['status']  = 'erro';
-            $dataArr['message'] = 'Divisão não existe';
+            $dataArr['message'] = 'Time não existe';
             return new JsonModel($dataArr);
         }
 
         $form = new TimeForm();
+        $request = $this->getRequest();
 
         $inputfilter = new FormTimeFilter();
         $form->setInputFilter($inputfilter);
+        $data = $request->getPost();
         $data['id'] = $id;
         $form->setData($data);
 
@@ -121,29 +155,34 @@ class TimeController extends AbstractRestfulController
             try {
                 $this->table->saveTime($time);
                 $dataArr['status']  = 'sucesso';
-                $dataArr['message'] = 'Divisão atualizada com sucesso!';
+                $dataArr['message'] = 'Time atualizado com sucesso!';
                 return new JsonModel($dataArr);
             } catch (\Exception $e) {
                 $dataArr['status']  = 'erro';
-                $dataArr['message'] = 'Divisão não existe';
+                $dataArr['message'] = 'Time não existe';
                 return new JsonModel($dataArr);
             }
         }
 
         $dataArr['status']  = 'erro';
-        $dataArr['message'] = 'Dados inválidos';
+        $messages = $form->getMessages();
+
+        if (!empty($messages)) {
+            $dataArr['message'] = $this->translateMessageErrors($messages);    
+        }
+
         return new JsonModel($dataArr);
     }
 
-    public function delete($id) 
+    public function deleteAction() 
     {
-        $id = (int) $id;
+        $id = (int) $this->params()->fromRoute('id');
 
         $dataArr=[];
 
         if (0 === $id) {
             $dataArr['status']  = 'erro';
-            $dataArr['message'] = 'Divisão não existe';
+            $dataArr['message'] = 'Time não existe';
             return new JsonModel($dataArr);
         }
 
@@ -152,12 +191,13 @@ class TimeController extends AbstractRestfulController
         if ($time) {
             $this->table->deleteTime($id);
             $dataArr['status']  = 'sucesso';
-            $dataArr['message'] = 'Divisão excluída com sucesso!';
+            $dataArr['message'] = 'Time excluído com sucesso!';
             return new JsonModel($dataArr);
         }
 
         $dataArr['status']  = 'erro';
-        $dataArr['message'] = 'Divisão não existe';
+        $dataArr['message'] = 'Time não existe'; 
+        
         return new JsonModel($dataArr);
     }
 

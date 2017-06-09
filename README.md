@@ -90,23 +90,20 @@ Excluindo um Técnico
 ## Time
 
 ```
-Os comandos abaixo neste módulo ainda não funcionando pois o módulo ainda não foi codificado completamente.
-
 Listando todos Times
  curl -v -X GET http://192.168.33.10:8080/api/time
 
 Adicionando um novo Time
- curl -d "nome=gremio" -v -X POST http://192.168.33.10:8080/api/tecnico
+ curl -d "nome=inter&tecnico_codigo_tecnico=5&categoria_codigo_categoria=10&divisao_codigo_divisao=4&desempenho_time=0&comprar_novo_jogador=0&capa=foto.png" -v -X POST http://192.168.33.10:8080/api/time/create
 
 Detalhe do Time
- curl -v -X GET http://192.168.33.10:8080/api/time/4
+ curl -v -X GET http://192.168.33.10:8080/api/time/detalhe/2
 
 Atualizando um Time
- curl -d "nome=ceramica" -v -X PUT http://192.168.33.10:8080/api/time/4
+ curl -d "nome=ceramica&tecnico_codigo_tecnico=5&categoria_codigo_categoria=10&divisao_codigo_divisao=4&desempenho_time=0&comprar_novo_jogador=0&capa=foto.png" -v -X POST http://192.168.33.10:8080/api/time/update/2
 
 Excluindo um Time
- curl -v -X DELETE http://192.168.33.10:8080/api/time/4
+ curl -v -X DELETE http://192.168.33.10:8080/api/time/delete/2
 ```
-
 
 Meu perfil no linkedin(http://br.linkedin.com/in/matheussilvaphp)

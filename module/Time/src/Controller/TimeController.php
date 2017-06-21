@@ -121,7 +121,7 @@ class TimeController extends AbstractActionController
         $messages = $form->getMessages();
 
         if (!empty($messages)) {
-            $dataArr['message'] = $this->translateMessageErrors($messages);    
+            $dataArr['message'] = $messages;    
         }
 
         return new JsonModel($dataArr);
@@ -168,7 +168,7 @@ class TimeController extends AbstractActionController
         $messages = $form->getMessages();
 
         if (!empty($messages)) {
-            $dataArr['message'] = $this->translateMessageErrors($messages);    
+            $dataArr['message'] = $messages;    
         }
 
         return new JsonModel($dataArr);

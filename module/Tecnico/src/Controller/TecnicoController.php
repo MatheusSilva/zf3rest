@@ -116,7 +116,7 @@ class TecnicoController extends AbstractRestfulController
         $messages = $form->getMessages();
 
         if (!empty($messages)) {
-            $dataArr['message'] = $this->translateMessageErrors($messages);    
+            $dataArr['message'] = $messages;    
         }
 
         return new JsonModel($dataArr);
@@ -161,7 +161,7 @@ class TecnicoController extends AbstractRestfulController
         $messages = $form->getMessages();
 
         if (!empty($messages)) {
-            $dataArr['message'] = $this->translateMessageErrors($messages);    
+            $dataArr['message'] = $messages;    
         }
 
         return new JsonModel($dataArr);

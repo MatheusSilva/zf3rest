@@ -110,7 +110,7 @@ class UserController extends AbstractRestfulController {
         $messages = $form->getMessages();
 
         if (!empty($messages)) {
-            $dataArr['message'] = $this->translateMessageErrors($messages);    
+            $dataArr['message'] = $messages;    
         }
 
         return new JsonModel($dataArr);
@@ -153,7 +153,7 @@ class UserController extends AbstractRestfulController {
         $messages = $form->getMessages();
 
         if (!empty($messages)) {
-            $dataArr['message'] = $this->translateMessageErrors($messages);    
+            $dataArr['message'] = $messages;    
         }
 
         return new JsonModel($dataArr);

@@ -8,9 +8,6 @@ use Time\Model\Time;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 
-use Zend\I18n\Translator\Resources;
-use Zend\I18n\Translator\Translator;
-
 class TimeController extends AbstractActionController 
 {
     private $table;
@@ -19,27 +16,7 @@ class TimeController extends AbstractActionController
     {
         $this->table = $table;
     }
-
-    private function translateMessageErrors($arrMessages)
-    {
-        $translator = new Translator();
-        $translator->addTranslationFilePattern(
-            'phpArray',
-            Resources::getBasePath(),
-            Resources::getPatternForValidator()
-        );
-
-        $arrAux = $arrMessages;
-
-        foreach ($arrAux as $keyProp => $valueProp) {
-            foreach ($valueProp as $key => $value) {
-            $arrMessages[$keyProp][$key] = $translator->translate($value, 'default', 'pt_BR');
-            }
-        }
-        
-        return $arrMessages;    
-    }
-
+    
     public function indexAction() 
     {
         $times = $this->table->fetchAll();
@@ -53,13 +30,13 @@ class TimeController extends AbstractActionController
         if (empty($data)) {
             $timeArr['status']     = 'sucesso';
             $timeArr['message']    = 'Times não encontradas';
-            $timeArr['torcedores'] = [];
+            $timeArr['times'] = [];
             return new JsonModel($timeArr);
         }
 
         $timeArr['status']     = 'sucesso';
         $timeArr['message']    = 'Times estão disponíveis';
-        $timeArr['torcedores'] = $data;
+        $timeArr['times'] = $data;
         return new JsonModel($timeArr);
     }
 
@@ -83,13 +60,13 @@ class TimeController extends AbstractActionController
         } else {
             $dataArr['status']  = 'erro';
             $dataArr['message'] = 'Time não existe';
-            $dataArr['torcedorDetails'] = [];
+            $dataArr['timeDetalhes'] = [];
             return new JsonModel($dataArr);
         }
 
         $dataArr['status']  = 'sucesso';
         $dataArr['message'] = 'Detalhes do time estão disponíveis';
-        $dataArr['torcedorDetails'] = $timeArr;
+        $dataArr['timeDetalhes'] = $timeArr;
         return new JsonModel($dataArr);
     }
 

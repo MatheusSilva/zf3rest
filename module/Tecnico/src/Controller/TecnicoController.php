@@ -7,8 +7,6 @@ use Tecnico\Model\TecnicoTable;
 use Tecnico\Model\Tecnico;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
-use Zend\I18n\Translator\Resources;
-use Zend\I18n\Translator\Translator;
 
 class TecnicoController extends AbstractRestfulController 
 {
@@ -18,27 +16,7 @@ class TecnicoController extends AbstractRestfulController
     {
         $this->table = $table;
     }
-
-    private function translateMessageErrors($arrMessages)
-    {
-        $translator = new Translator();
-        $translator->addTranslationFilePattern(
-            'phpArray',
-            Resources::getBasePath(),
-            Resources::getPatternForValidator()
-        );
-
-        $arrAux = $arrMessages;
-
-        foreach ($arrAux as $keyProp => $valueProp) {
-            foreach ($valueProp as $key => $value) {
-            $arrMessages[$keyProp][$key] = $translator->translate($value, 'default', 'pt_BR');
-            }
-        }
-        
-        return $arrMessages;    
-    }
-
+    
     public function getList() 
     {
         $tecnicos = $this->table->fetchAll();
@@ -52,13 +30,13 @@ class TecnicoController extends AbstractRestfulController
         if (empty($data)) {
             $tecnicoArr['status']     = 'sucesso';
             $tecnicoArr['message']    = 'Técnicos não encontrados';
-            $tecnicoArr['torcedores'] = [];
+            $tecnicoArr['tecnicos'] = [];
             return new JsonModel($tecnicoArr);
         }
 
         $tecnicoArr['status']     = 'sucesso';
         $tecnicoArr['message']    = 'Técnicos estão disponíveis';
-        $tecnicoArr['torcedores'] = $data;
+        $tecnicoArr['tecnicos'] = $data;
         return new JsonModel($tecnicoArr);
     }
 
@@ -82,13 +60,13 @@ class TecnicoController extends AbstractRestfulController
         } else {
             $dataArr['status']  = 'erro';
             $dataArr['message'] = 'Técnico não existe';
-            $dataArr['torcedorDetails'] = [];
+            $dataArr['tecnicoDetalhes'] = [];
             return new JsonModel($dataArr);
         }
 
         $dataArr['status']  = 'sucesso';
         $dataArr['message'] = 'Detalhes do Técnico estão disponíveis';
-        $dataArr['torcedorDetails'] = $tecnicoArr;
+        $dataArr['tecnicoDetalhes'] = $tecnicoArr;
         return new JsonModel($dataArr);
     }
 

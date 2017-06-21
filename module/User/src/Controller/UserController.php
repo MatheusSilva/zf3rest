@@ -7,38 +7,19 @@ use User\Model\UserTable;
 use User\Model\User;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
-use Zend\I18n\Translator\Resources;
-use Zend\I18n\Translator\Translator;
 
-class UserController extends AbstractRestfulController {
+class UserController extends AbstractRestfulController 
+{
 
     private $table;
 
-    public function __construct(UserTable $table) {
+    public function __construct(UserTable $table) 
+    {
         $this->table = $table;
     }
 
-    private function translateMessageErrors($arrMessages)
+    public function getList() 
     {
-        $translator = new Translator();
-        $translator->addTranslationFilePattern(
-            'phpArray',
-            Resources::getBasePath(),
-            Resources::getPatternForValidator()
-        );
-
-        $arrAux = $arrMessages;
-
-        foreach ($arrAux as $keyProp => $valueProp) {
-            foreach ($valueProp as $key => $value) {
-            $arrMessages[$keyProp][$key] = $translator->translate($value, 'default', 'pt_BR');
-            }
-        }
-        
-        return $arrMessages;    
-    }
-
-    public function getList() {
         $users = $this->table->fetchAll();
         $data = $userArr = [];
         foreach($users as $user) {
@@ -59,7 +40,8 @@ class UserController extends AbstractRestfulController {
 
     }
 
-    public function get($id) {
+    public function get($id) 
+    {
         $id = (int) $id;
 
         if (0 === $id) {
@@ -77,18 +59,19 @@ class UserController extends AbstractRestfulController {
         } else {
             $dataArr['status'] ='erro';
             $dataArr['message'] = 'Torcedor não existe';
-            $dataArr['torcedorDetails'] = [];
+            $dataArr['torcedorDetalhes'] = [];
             return new JsonModel($dataArr);
         }
 
         $dataArr['status'] ='sucesso';
         $dataArr['message'] = 'Detalhes do torcedor estão disponíveis';
-        $dataArr['torcedorDetails'] = $userArr;
+        $dataArr['torcedorDetalhes'] = $userArr;
         return new JsonModel($dataArr);
 
     }
 
-    public function create($data) {
+    public function create($data) 
+    {
         $form = new UserForm();
         $request = $this->getRequest();
 
@@ -116,7 +99,8 @@ class UserController extends AbstractRestfulController {
         return new JsonModel($dataArr);
     }
 
-    public function update($id, $data) {
+    public function update($id, $data) 
+    {
 
         $id = (int) $id;
 
@@ -160,7 +144,8 @@ class UserController extends AbstractRestfulController {
 
     }
 
-    public function delete($id) {
+    public function delete($id) 
+    {
         $id = (int) $id;
 
         $dataArr=[];

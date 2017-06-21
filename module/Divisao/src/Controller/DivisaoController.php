@@ -7,8 +7,6 @@ use Divisao\Model\DivisaoTable;
 use Divisao\Model\Divisao;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
-use Zend\I18n\Translator\Resources;
-use Zend\I18n\Translator\Translator;
 
 class DivisaoController extends AbstractRestfulController 
 {
@@ -18,27 +16,7 @@ class DivisaoController extends AbstractRestfulController
     {
         $this->table = $table;
     }
-
-    private function translateMessageErrors($arrMessages)
-    {
-        $translator = new Translator();
-        $translator->addTranslationFilePattern(
-            'phpArray',
-            Resources::getBasePath(),
-            Resources::getPatternForValidator()
-        );
-
-        $arrAux = $arrMessages;
-
-        foreach ($arrAux as $keyProp => $valueProp) {
-            foreach ($valueProp as $key => $value) {
-            $arrMessages[$keyProp][$key] = $translator->translate($value, 'default', 'pt_BR');
-            }
-        }
-        
-        return $arrMessages;    
-    }
-
+    
     public function getList() 
     {
         $divisaos = $this->table->fetchAll();
@@ -52,13 +30,13 @@ class DivisaoController extends AbstractRestfulController
         if (empty($data)) {
             $divisaoArr['status']     = 'sucesso';
             $divisaoArr['message']    = 'Divisões não encontradas';
-            $divisaoArr['torcedores'] = [];
+            $divisaoArr['divisao'] = [];
             return new JsonModel($divisaoArr);
         }
 
         $divisaoArr['status']     = 'sucesso';
         $divisaoArr['message']    = 'Divisões estão disponíveis';
-        $divisaoArr['torcedores'] = $data;
+        $divisaoArr['divisao'] = $data;
         return new JsonModel($divisaoArr);
     }
 
@@ -82,13 +60,13 @@ class DivisaoController extends AbstractRestfulController
         } else {
             $dataArr['status']  = 'erro';
             $dataArr['message'] = 'Divisão não existe';
-            $dataArr['torcedorDetails'] = [];
+            $dataArr['divisaoDetalhes'] = [];
             return new JsonModel($dataArr);
         }
 
         $dataArr['status']  = 'sucesso';
         $dataArr['message'] = 'Detalhes da divisão estão disponíveis';
-        $dataArr['torcedorDetails'] = $divisaoArr;
+        $dataArr['divisaoDetalhes'] = $divisaoArr;
         return new JsonModel($dataArr);
     }
 

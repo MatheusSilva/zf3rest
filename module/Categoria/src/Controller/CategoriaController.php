@@ -30,13 +30,13 @@ class CategoriaController extends AbstractRestfulController
         if (empty($data)) {
             $categoriaArr['status']     = 'sucesso';
             $categoriaArr['message']    = 'Categorias não encontradas';
-            $categoriaArr['torcedores'] = [];
+            $categoriaArr['categorias'] = [];
             return new JsonModel($categoriaArr);
         }
 
         $categoriaArr['status']     = 'sucesso';
         $categoriaArr['message']    = 'Categorias estão disponíveis';
-        $categoriaArr['torcedores'] = $data;
+        $categoriaArr['categorias'] = $data;
         return new JsonModel($categoriaArr);
     }
 
@@ -60,13 +60,13 @@ class CategoriaController extends AbstractRestfulController
         } else {
             $dataArr['status']  = 'erro';
             $dataArr['message'] = 'Categoria não existe';
-            $dataArr['torcedorDetails'] = [];
+            $dataArr['categoriaDetalhes'] = [];
             return new JsonModel($dataArr);
         }
 
         $dataArr['status']          = 'sucesso';
         $dataArr['message']         = 'Detalhes da categoria estão disponíveis';
-        $dataArr['torcedorDetails'] = $categoriaArr;
+        $dataArr['categoriaDetalhes'] = $categoriaArr;
         return new JsonModel($dataArr);
     }
 

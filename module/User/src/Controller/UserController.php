@@ -56,22 +56,23 @@ class UserController extends AbstractRestfulController
             return new JsonModel($dataArr);
         }
 
-        $user = $this->table->getUser($id);
-
-        $dataArr = $userArr = [];
-        if($user){
-            // Private/Protected Object to Array Conversion
-            $userArr = json_decode(json_encode($user), true);
-        } else {
+        $objUser = $this->table->getUser($id);
+   
+        if (empty($objUser)) {
             $dataArr['status'] ='erro';
             $dataArr['message'] = 'Torcedor não existe';
             $dataArr['torcedorDetalhes'] = [];
             return new JsonModel($dataArr);
         }
 
+        $data[] = [
+            'nome' => $objUser->nome,
+            'email' => $objUser->email
+        ];
+        
         $dataArr['status'] ='sucesso';
         $dataArr['message'] = 'Detalhes do torcedor estão disponíveis';
-        $dataArr['torcedorDetalhes'] = $userArr;
+        $dataArr['torcedorDetalhes'] = $data;
         return new JsonModel($dataArr);
 
     }

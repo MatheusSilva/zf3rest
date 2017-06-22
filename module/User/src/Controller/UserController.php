@@ -22,8 +22,14 @@ class UserController extends AbstractRestfulController
     {
         $users = $this->table->fetchAll();
         $data = $userArr = [];
+        
         foreach($users as $user) {
-            $data[] = $user;
+            //var_dump($user);exit;
+            $data[] = [
+                //'codigo_torcedor' => $user->codigo_torcedor,
+                'nome' => $user->nome,
+                'email' => $user->email
+            ];
         }
 
         if(empty($data)){

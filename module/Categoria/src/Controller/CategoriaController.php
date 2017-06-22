@@ -74,6 +74,17 @@ class CategoriaController extends AbstractRestfulController
     {
         $form = new CategoriaForm();
         $request = $this->getRequest();
+        $token = $request->getHeader('token')->getFieldValue();
+        
+        if ($token != "Abc2fh4gkmnop13ax") { 
+            /*teste hardcode temporario no if.
+             * mudar para uma função que busca este token na tabela torcedor
+             * usar uma função mestra  
+             */
+            $dataArr['status']  = 'error';
+            $dataArr['message'] = 'Por favor faça o login novamente!';
+            return new JsonModel($dataArr);
+        }
 
         $inputfilter = new FormCategoriaFilter();
         $form->setInputFilter($inputfilter);

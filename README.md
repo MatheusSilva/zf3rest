@@ -1,5 +1,5 @@
 # ZF3-API
-Estou portando uma parte deste projeto https://github.com/MatheusSilva/zendphptecinfo para o Zend FrameWork 3 em forma de Api RestFull 
+Estou portando uma parte deste projeto https://github.com/matheussouzadasilva/zendphptecinfo para o Zend FrameWork 3 em forma de Api RestFull 
 
 ## Arquivo para criar o banco de dados
 

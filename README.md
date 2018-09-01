@@ -105,5 +105,3 @@ Atualizando um Time
 Excluindo um Time
  curl -v -X DELETE http://192.168.33.10:8080/api/time/delete/2
 ```
-
-Meu perfil no linkedin(http://br.linkedin.com/in/matheussilvaphp)
